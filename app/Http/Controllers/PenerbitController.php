@@ -12,7 +12,8 @@ class PenerbitController extends Controller
      */
     public function index()
     {
-        //
+        $data = Penerbit::all();
+        return view('admin.penerbit.index', compact('data'));
     }
 
     /**
@@ -20,7 +21,7 @@ class PenerbitController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.penerbit.create');
     }
 
     /**
@@ -28,7 +29,8 @@ class PenerbitController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Penerbit::create($request->all());
+        return redirect('/admin/penerbit');
     }
 
     /**
@@ -44,7 +46,7 @@ class PenerbitController extends Controller
      */
     public function edit(penerbit $penerbit)
     {
-        //
+        return view('admin.penerbit.edit', compact('penerbit'));
     }
 
     /**
@@ -52,7 +54,8 @@ class PenerbitController extends Controller
      */
     public function update(Request $request, penerbit $penerbit)
     {
-        //
+        $penerbit->update($request->all());
+        return redirect('/admin/penerbit');
     }
 
     /**
@@ -60,6 +63,7 @@ class PenerbitController extends Controller
      */
     public function destroy(penerbit $penerbit)
     {
-        //
+        $penerbit->delete();
+        return back();
     }
 }

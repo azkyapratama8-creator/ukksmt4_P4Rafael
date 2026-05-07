@@ -39,8 +39,10 @@
                     </div>
                     <div class="card-body p-sm-5">
                         <h2 class="fs-20 fw-bolder mb-4">Login</h2>
-                        <h4 class="fs-13 fw-bold mb-2">Login to your account</h4>
-                        <p class="fs-12 fw-medium text-muted">Thank you for get back <strong>Nelel</strong> web applications, let's access our the best recommendation for you.</p>
+                        <h4 class="fs-13 fw-bold mb-2">Selamat datang 👋</h4>
+                        <p class="fs-12 fw-medium text-muted">
+                            Masuk ke aplikasi peminjaman buku. Di sini kamu bisa pinjam buku, lihat daftar buku, dan cek status peminjaman.
+                        </p>
                         <form method="POST" action="{{ url('/login') }}" class="w-100 mt-4 pt-2">
                             @csrf
 

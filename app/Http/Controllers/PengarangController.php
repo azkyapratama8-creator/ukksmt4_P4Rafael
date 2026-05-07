@@ -12,7 +12,8 @@ class PengarangController extends Controller
      */
     public function index()
     {
-        //
+        $data = Pengarang::all();
+        return view('admin.pengarang.index', compact('data'));
     }
 
     /**
@@ -20,7 +21,7 @@ class PengarangController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.pengarang.create');
     }
 
     /**
@@ -28,7 +29,8 @@ class PengarangController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Pengarang::create($request->all());
+        return redirect('/admin/pengarang');
     }
 
     /**
@@ -44,7 +46,7 @@ class PengarangController extends Controller
      */
     public function edit(pengarang $pengarang)
     {
-        //
+        return view('admin.pengarang.edit', compact('pengarang'));
     }
 
     /**
@@ -52,7 +54,8 @@ class PengarangController extends Controller
      */
     public function update(Request $request, pengarang $pengarang)
     {
-        //
+        $pengarang->update($request->all());
+        return redirect('/admin/pengarang');
     }
 
     /**
@@ -60,6 +63,7 @@ class PengarangController extends Controller
      */
     public function destroy(pengarang $pengarang)
     {
-        //
+        $pengarang->delete();
+        return back();
     }
 }

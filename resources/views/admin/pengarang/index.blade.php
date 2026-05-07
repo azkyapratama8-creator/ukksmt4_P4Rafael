@@ -3,13 +3,13 @@
 @section('content')
 
 <div class="page-header">
-  <h4 class="mb-0">Data Petugas</h4>
+  <h4 class="mb-0">Data Pengarang</h4>
 </div>
 
 <div class="card mt-3">
   <div class="card-header d-flex justify-content-between align-items-center">
-    <span>Daftar Petugas</span>
-    <a href="/admin/petugas/create" class="btn btn-primary btn-sm">
+    <span>Daftar Pengarang</span>
+    <a href="/admin/pengarang/create" class="btn btn-primary btn-sm">
       <i class="feather-plus"></i> Tambah
     </a>
   </div>
@@ -22,26 +22,24 @@
           <tr>
             <th width="5%">No</th>
             <th>Nama</th>
-            <th>Email</th>
             <th width="20%">Aksi</th>
           </tr>
         </thead>
 
         <tbody>
-          @foreach($data as $key => $u)
+          @forelse($data as $key => $d)
           <tr>
             <td>{{ $key + 1 }}</td>
-            <td>{{ $u->name }}</td>
-            <td>{{ $u->email }}</td>
+            <td>{{ $d->nama }}</td>
             <td>
               <div class="d-flex gap-2">
 
-                <a href="/admin/petugas/{{ $u->id }}/edit"
+                <a href="/admin/pengarang/{{ $d->id }}/edit"
                   class="btn btn-warning btn-sm w-100 text-center">
                   Edit
                 </a>
 
-                <form action="/admin/petugas/{{ $u->id }}" method="POST" class="w-100">
+                <form action="/admin/pengarang/{{ $d->id }}" method="POST" class="w-100">
                   @csrf
                   @method('DELETE')
 
@@ -53,7 +51,11 @@
               </div>
             </td>
           </tr>
-          @endforeach
+          @empty
+          <tr>
+            <td colspan="3" class="text-center">Data kosong</td>
+          </tr>
+          @endforelse
         </tbody>
 
       </table>

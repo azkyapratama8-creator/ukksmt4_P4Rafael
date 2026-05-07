@@ -28,4 +28,27 @@ class BukuController extends Controller
         Buku::create($request->all());
         return redirect('/admin/buku');
     }
+
+    public function edit(int $id)
+    {
+        $buku = Buku::findOrFail($id);
+        $pengarang = Pengarang::all();
+        $penerbit = Penerbit::all();
+
+        return view('admin.buku.edit', compact('buku', 'pengarang', 'penerbit'));
+    }
+
+    public function update(Request $request, int $id)
+    {
+        $buku = Buku::findOrFail($id);
+        $buku->update($request->all());
+
+        return redirect('/admin/buku');
+    }
+
+    public function destroy(int $id)
+    {
+        Buku::destroy($id);
+        return back();
+    }
 }

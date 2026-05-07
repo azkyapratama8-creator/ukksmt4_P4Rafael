@@ -30,14 +30,12 @@
                 <li class="nxl-item nxl-caption mt-3">
                     <label>MASTER DATA</label>
                 </li>
-
-                <li class="nxl-item"><a href="/admin/anggota" class="nxl-link"><i class="feather-users"></i> Anggota</a></li>
-                <li class="nxl-item"><a href="/admin/petugas" class="nxl-link"><i class="feather-user-check"></i> Petugas</a></li>
+                <li class="nxl-item"><a href="/admin/users" class="nxl-link"><i class="feather-users"></i> Users</a></li>
                 <li class="nxl-item"><a href="/admin/buku" class="nxl-link"><i class="feather-book"></i> Buku</a></li>
-                <li class="nxl-item"><a href="/admin/rak-buku" class="nxl-link"><i class="feather-grid"></i> Rak Buku</a></li>
-                <li class="nxl-item"><a href="/admin/kelas" class="nxl-link"><i class="feather-layers"></i> Kelas</a></li>
                 <li class="nxl-item"><a href="/admin/penerbit" class="nxl-link"><i class="feather-printer"></i> Penerbit</a></li>
                 <li class="nxl-item"><a href="/admin/pengarang" class="nxl-link"><i class="feather-edit"></i> Pengarang</a></li>
+                <li class="nxl-item"><a href="/admin/rak-buku" class="nxl-link"><i class="feather-grid"></i> Rak Buku</a></li>
+                <li class="nxl-item"><a href="/admin/kelas" class="nxl-link"><i class="feather-layers"></i> Kelas</a></li>
 
                 <li class="nxl-item nxl-caption mt-3">
                     <label>TRANSAKSI</label>
