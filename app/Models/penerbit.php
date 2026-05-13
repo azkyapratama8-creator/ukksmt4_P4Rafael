@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Buku;
 
-class penerbit extends Model
+class Penerbit extends Model
 {
     protected $fillable = ['nama'];
 

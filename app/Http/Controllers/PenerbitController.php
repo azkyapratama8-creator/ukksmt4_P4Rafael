@@ -2,68 +2,73 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\penerbit;
+use App\Models\Penerbit;
 use Illuminate\Http\Request;
 
 class PenerbitController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    // 📚 menampilkan semua data penerbit
     public function index()
     {
+        // ambil semua data penerbit dari database
         $data = Penerbit::all();
+
+        // kirim ke view index penerbit
         return view('admin.penerbit.index', compact('data'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+    // ➕ menampilkan form tambah penerbit
     public function create()
     {
         return view('admin.penerbit.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    // 💾 menyimpan data penerbit baru
     public function store(Request $request)
     {
+        // 🔐 validasi input (biar tidak kosong / error)
+        $request->validate([
+            'nama_penerbit' => 'required',
+        ]);
+
+        // simpan data ke database
         Penerbit::create($request->all());
-        return redirect('/admin/penerbit');
+
+        // redirect ke halaman index
+        return redirect('/admin/penerbit')->with('success', 'Data berhasil ditambahkan');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(penerbit $penerbit)
+    // 👀 show tidak dipakai (boleh dihapus kalau tidak digunakan)
+    public function show(Penerbit $penerbit)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(penerbit $penerbit)
+    // ✏️ menampilkan form edit penerbit
+    public function edit(Penerbit $penerbit)
     {
         return view('admin.penerbit.edit', compact('penerbit'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, penerbit $penerbit)
+    // 🔄 update data penerbit
+    public function update(Request $request, Penerbit $penerbit)
     {
+        // 🔐 validasi input
+        $request->validate([
+            'nama_penerbit' => 'required',
+        ]);
+
+        // update data
         $penerbit->update($request->all());
-        return redirect('/admin/penerbit');
+
+        return redirect('/admin/penerbit')->with('success', 'Data berhasil diupdate');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(penerbit $penerbit)
+    // 🗑️ hapus data penerbit
+    public function destroy(Penerbit $penerbit)
     {
         $penerbit->delete();
-        return back();
+
+        return back()->with('success', 'Data berhasil dihapus');
     }
 }

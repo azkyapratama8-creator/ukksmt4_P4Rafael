@@ -2,68 +2,73 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\pengarang;
+use App\Models\Pengarang;
 use Illuminate\Http\Request;
 
 class PengarangController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    // 📚 menampilkan semua data pengarang
     public function index()
     {
+        // ambil semua data dari database
         $data = Pengarang::all();
+
+        // kirim ke view index pengarang
         return view('admin.pengarang.index', compact('data'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+    // ➕ form tambah pengarang
     public function create()
     {
         return view('admin.pengarang.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    // 💾 simpan data pengarang baru
     public function store(Request $request)
     {
+        // 🔐 validasi input
+        $request->validate([
+            'nama_pengarang' => 'required'
+        ]);
+
+        // simpan ke database
         Pengarang::create($request->all());
-        return redirect('/admin/pengarang');
+
+        // redirect + pesan sukses
+        return redirect('/admin/pengarang')->with('success', 'Data berhasil ditambahkan');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(pengarang $pengarang)
+    // 👀 detail pengarang
+    public function show(Pengarang $pengarang)
     {
-        //
+        return view('admin.pengarang.show', compact('pengarang'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(pengarang $pengarang)
+    // ✏️ form edit pengarang
+    public function edit(Pengarang $pengarang)
     {
         return view('admin.pengarang.edit', compact('pengarang'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, pengarang $pengarang)
+    // 🔄 update data pengarang
+    public function update(Request $request, Pengarang $pengarang)
     {
+        // 🔐 validasi input
+        $request->validate([
+            'nama_pengarang' => 'required'
+        ]);
+
+        // update data
         $pengarang->update($request->all());
-        return redirect('/admin/pengarang');
+
+        return redirect('/admin/pengarang')->with('success', 'Data berhasil diupdate');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(pengarang $pengarang)
+    // 🗑️ hapus data pengarang
+    public function destroy(Pengarang $pengarang)
     {
         $pengarang->delete();
-        return back();
+
+        return back()->with('success', 'Data berhasil dihapus');
     }
 }

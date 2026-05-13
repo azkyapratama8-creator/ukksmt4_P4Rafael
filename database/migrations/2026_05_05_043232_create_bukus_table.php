@@ -17,6 +17,7 @@ return new class extends Migration
 
             $table->foreignId('pengarang_id')->constrained()->onDelete('cascade');
             $table->foreignId('penerbit_id')->constrained()->onDelete('cascade');
+            
 
             $table->year('tahun');
             $table->integer('stok');

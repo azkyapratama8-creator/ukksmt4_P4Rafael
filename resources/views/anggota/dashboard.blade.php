@@ -11,6 +11,9 @@
       <li class="breadcrumb-item active">Dashboard</li>
     </ul>
   </div>
+  <div class="page-header-right">
+    <a href="{{ route('anggota.peminjaman.create') }}" class="btn btn-primary">Ajukan Peminjaman</a>
+  </div>
 </div>
 
 <div class="main-content">

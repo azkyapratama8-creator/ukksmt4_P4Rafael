@@ -4,34 +4,47 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\Controller;
 
 class AuthController extends Controller
 {
     public function login(Request $request)
     {
-        $credentials = $request->only('email', 'password');
+        // 🔐 validasi input dulu (biar lebih aman & cepat error detect)
+        $credentials = $request->validate([
+            'email' => 'required|email',
+            'password' => 'required'
+        ]);
 
+        // 🔑 proses login
         if (Auth::attempt($credentials)) {
+
+            // 🔄 regenerate session (security)
             $request->session()->regenerate();
 
-            $role = Auth::user()->role;
+            $user = Auth::user();
 
-            if ($role == 'admin') {
-                return redirect('/admin/dashboard');
-            } elseif ($role == 'petugas') {
-                return redirect('/petugas/dashboard');
-            } else {
-                return redirect('/anggota/dashboard');
-            }
+            // 🚦 redirect berdasarkan role
+            return match ($user->role) {
+                'admin'   => redirect('/admin/dashboard'),
+                'petugas' => redirect('/petugas/dashboard'),
+                default   => redirect('/anggota/dashboard'),
+            };
         }
 
-        return back()->with('error', 'Login gagal');
+        // ❌ login gagal
+        return back()->withErrors([
+            'email' => 'Email atau password salah'
+        ])->onlyInput('email');
     }
 
-    public function logout()
+    public function logout(Request $request)
     {
         Auth::logout();
+
+        // 🧹 bersihkan session biar aman
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
         return redirect('/');
     }
 }

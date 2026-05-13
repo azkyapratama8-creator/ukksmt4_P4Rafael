@@ -1,64 +1,101 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+
+// ================= CONTROLLER =================
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\BukuController;
 use App\Http\Controllers\PengarangController;
 use App\Http\Controllers\PenerbitController;
+use App\Http\Controllers\RakBukuController;
+use App\Http\Controllers\KelasController;
+use App\Http\Controllers\PeminjamanController;
+use App\Http\Controllers\PengembalianController;
+use App\Http\Controllers\DendaController;
+use App\Http\Controllers\LaporanPeminjamanController;
+use App\Http\Controllers\LaporanPengembalianController;
+use App\Http\Controllers\LaporanDendaController;
 
-// ================= LOGIN =================
+# =================================================
+# 🔐 AUTH
+# =================================================
 Route::get('/', fn() => view('auth.login'));
 Route::get('/login', fn() => view('auth.login'));
+
 Route::post('/login', [AuthController::class, 'login']);
 Route::get('/logout', [AuthController::class, 'logout']);
 
-
-// ================= ADMIN =================
+# =================================================
+# 👨‍💻 ADMIN (MASTER DATA + LAPORAN)
+# =================================================
 Route::prefix('admin')->middleware('role:admin')->group(function () {
-    Route::get('/dashboard', fn() => view('admin.dashboard'));
 
-    // ================= CRUD USERS =================
-    Route::get('/users', [UserController::class, 'index']);
-    Route::get('/users/create', [UserController::class, 'create']);
-    Route::post('/users', [UserController::class, 'store']);
-    Route::get('/users/{id}/edit', [UserController::class, 'edit']);
-    Route::put('/users/{id}', [UserController::class, 'update']);
-    Route::delete('/users/{id}', [UserController::class, 'destroy']);
+    # DASHBOARD
+    Route::get('/dashboard', [DashboardController::class, 'index']);
 
-    // ================= CRUD BUKU =================
-    Route::get('/buku', [BukuController::class, 'index']);
-    Route::get('/buku/create', [BukuController::class, 'create']);
-    Route::post('/buku', [BukuController::class, 'store']);
-    Route::get('/buku/{id}/edit', [BukuController::class, 'edit']);
-    Route::put('/buku/{id}', [BukuController::class, 'update']);
-    Route::delete('/buku/{id}', [BukuController::class, 'destroy']);
+    # USER MANAGEMENT
+    Route::resource('users', UserController::class);
 
-    // ================= CRUD PENGARANG =================
-    Route::get('/pengarang', [PengarangController::class, 'index']);
-    Route::get('/pengarang/create', [PengarangController::class, 'create']);
-    Route::post('/pengarang', [PengarangController::class, 'store']);
-    Route::get('/pengarang/{id}/edit', [PengarangController::class, 'edit']);
-    Route::put('/pengarang/{id}', [PengarangController::class, 'update']);
-    Route::delete('/pengarang/{id}', [PengarangController::class, 'destroy']);
+    # MASTER DATA BUKU
+    Route::resource('buku', BukuController::class);
+    Route::resource('pengarang', PengarangController::class);
+    Route::resource('penerbit', PenerbitController::class);
+    Route::resource('rak-buku', RakBukuController::class);
+    Route::resource('kelas', KelasController::class);
 
-    // ================= CRUD PENERBIT =================
-    Route::get('/penerbit', [PenerbitController::class, 'index']);
-    Route::get('/penerbit/create', [PenerbitController::class, 'create']);
-    Route::post('/penerbit', [PenerbitController::class, 'store']);
-    Route::get('/penerbit/{id}/edit', [PenerbitController::class, 'edit']);
-    Route::put('/penerbit/{id}', [PenerbitController::class, 'update']);
-    Route::delete('/penerbit/{id}', [PenerbitController::class, 'destroy']);
+    # LAPORAN (READ ONLY)
+    Route::get('/laporan-peminjaman', [LaporanPeminjamanController::class, 'index']);
+    Route::get('/laporan-pengembalian', [LaporanPengembalianController::class, 'index']);
+    Route::get('/laporan-denda', [LaporanDendaController::class, 'index']);
 });
 
+# =================================================
+# 👨‍💼 PETUGAS (APPROVAL + OPERASIONAL)
+# =================================================
+Route::prefix('petugas')->middleware('role:petugas')->group(function () {
 
-// ================= DASHBOARD ROLE =================
-// DASHBOARD PETUGAS
-Route::get('/dashboard/petugas', function () {
-    return view('petugas.dashboard');
-})->middleware('role:petugas');
+    # DASHBOARD
+    Route::get('/dashboard', fn() => view('petugas.dashboard'));
 
-// DASHBOARD ANGGOTA
-Route::get('/dashboard/anggota', function () {
-    return view('anggota.dashboard');
-})->middleware('role:anggota');
+    # ================= PEMINJAMAN =================
+    Route::resource('peminjaman', PeminjamanController::class)
+        ->names('petugas.peminjaman');
+    Route::get('peminjaman/{id}/approve', [PeminjamanController::class, 'approve'])
+        ->name('petugas.peminjaman.approve');
+    Route::get('peminjaman/{id}/reject', [PeminjamanController::class, 'reject'])
+        ->name('petugas.peminjaman.reject');
+
+    # ================= PENGEMBALIAN =================
+    Route::resource('pengembalian', PengembalianController::class)
+        ->names('petugas.pengembalian');
+    route::get('pengembalian/create', [PengembalianController::class, 'create'])
+        ->name('petugas.pengembalian.create');
+    route::post('pengembalian', [PengembalianController::class, 'store'])
+        ->name('petugas.pengembalian.store');
+
+    # ================= DENDA =================
+    // 📊 denda
+    Route::get('denda', [DendaController::class, 'index']);
+    Route::post('denda', [DendaController::class, 'store']);
+    // ✔ bayar denda
+    Route::get('denda/{id}/bayar', [DendaController::class, 'bayar']);
+});
+
+# =================================================
+# 👤 ANGGOTA (USER PINJAM BUKU)
+# =================================================
+Route::prefix('anggota')->middleware('role:anggota')->group(function () {
+
+    # DASHBOARD
+    Route::get('/dashboard', fn() => view('anggota.dashboard'))
+        ->name('anggota.dashboard');
+
+    # PINJAM BUKU
+    Route::get('/peminjaman/create', [PeminjamanController::class, 'create'])
+        ->name('anggota.peminjaman.create');
+
+    Route::post('/peminjaman', [PeminjamanController::class, 'store'])
+        ->name('anggota.peminjaman.store');
+});

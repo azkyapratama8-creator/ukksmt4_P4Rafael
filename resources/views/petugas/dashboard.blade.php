@@ -11,6 +11,9 @@
       <li class="breadcrumb-item active">Dashboard</li>
     </ul>
   </div>
+  <div class="page-header-right">
+    <a href="{{ route('petugas.peminjaman.index') }}" class="btn btn-primary">Kelola Peminjaman</a>
+  </div>
 </div>
 
 <div class="main-content">

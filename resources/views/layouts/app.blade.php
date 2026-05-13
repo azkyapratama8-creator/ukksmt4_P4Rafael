@@ -40,6 +40,17 @@
         display: flex !important;
         align-items: center !important;
       }
+
+      .table tbody tr td {
+        padding-top: 14px;
+        padding-bottom: 14px;
+        vertical-align: middle;
+      }
+
+      .table thead tr th {
+        padding-top: 12px;
+        padding-bottom: 12px;
+      }
     </style>
     <!-- SIDEBAR -->
     @include('layouts.sidebar')

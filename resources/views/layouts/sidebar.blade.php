@@ -18,7 +18,7 @@
                 </li>
 
                 <li class="nxl-item">
-                    <a href="#" class="nxl-link">
+                    <a href="/admin/dashboard" class="nxl-link">
                         <span class="nxl-micon"><i class="feather-airplay"></i></span>
                         <span class="nxl-mtext">Dashboard</span>
                     </a>
@@ -30,6 +30,7 @@
                 <li class="nxl-item nxl-caption mt-3">
                     <label>MASTER DATA</label>
                 </li>
+
                 <li class="nxl-item"><a href="/admin/users" class="nxl-link"><i class="feather-users"></i> Users</a></li>
                 <li class="nxl-item"><a href="/admin/buku" class="nxl-link"><i class="feather-book"></i> Buku</a></li>
                 <li class="nxl-item"><a href="/admin/penerbit" class="nxl-link"><i class="feather-printer"></i> Penerbit</a></li>
@@ -38,12 +39,13 @@
                 <li class="nxl-item"><a href="/admin/kelas" class="nxl-link"><i class="feather-layers"></i> Kelas</a></li>
 
                 <li class="nxl-item nxl-caption mt-3">
-                    <label>TRANSAKSI</label>
+                    <label>LAPORAN</label>
                 </li>
 
-                <li class="nxl-item"><a href="#" class="nxl-link"><i class="feather-calendar"></i> Peminjaman</a></li>
-                <li class="nxl-item"><a href="#" class="nxl-link"><i class="feather-rotate-ccw"></i> Pengembalian</a></li>
-                <li class="nxl-item"><a href="#" class="nxl-link"><i class="feather-dollar-sign"></i> Denda</a></li>
+                <li class="nxl-item"><a href="/admin/laporan-peminjaman" class="nxl-link"><i class="feather-file-text"></i> Laporan Peminjaman</a></li>
+                <li class="nxl-item"><a href="/admin/laporan-pengembalian" class="nxl-link"><i class="feather-file-text"></i> Laporan Pengembalian</a></li>
+                <li class="nxl-item"><a href="/admin/laporan-denda" class="nxl-link"><i class="feather-file-text"></i> Laporan Denda</a></li>
+
                 @endif
                 {{-- ================= PETUGAS ================= --}}
                 @if(Auth::check() && Auth::user()->role == 'petugas')
@@ -52,15 +54,12 @@
                     <label>TRANSAKSI</label>
                 </li>
 
-                <li class="nxl-item"><a href="#" class="nxl-link"><i class="feather-calendar"></i> Peminjaman</a></li>
-                <li class="nxl-item"><a href="#" class="nxl-link"><i class="feather-rotate-ccw"></i> Pengembalian</a></li>
-                <li class="nxl-item"><a href="#" class="nxl-link"><i class="feather-dollar-sign"></i> Denda</a></li>
+                <li class="nxl-item"><a href="/petugas/peminjaman" class="nxl-link"><i class="feather-calendar"></i>Peminjaman</a> </li>
+                <li class="nxl-item"><a href="/petugas/pengembalian" class="nxl-link"><i class="feather-rotate-ccw"></i> Pengembalian</a></li>
+                <li class="nxl-item"><a href="/petugas/denda" class="nxl-link"><i class="feather-dollar-sign"></i> Denda</a></li>
 
-                <li class="nxl-item nxl-caption mt-3">
-                    <label>DATA</label>
-                </li>
 
-                <li class="nxl-item"><a href="#" class="nxl-link"><i class="feather-book"></i> Buku</a></li>
+
 
                 @endif
                 {{-- ================= ANGGOTA ================= --}}
