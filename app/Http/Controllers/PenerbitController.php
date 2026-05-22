@@ -28,7 +28,7 @@ class PenerbitController extends Controller
     {
         // 🔐 validasi input (biar tidak kosong / error)
         $request->validate([
-            'nama_penerbit' => 'required',
+            'nama' => 'required',
         ]);
 
         // simpan data ke database
@@ -55,7 +55,7 @@ class PenerbitController extends Controller
     {
         // 🔐 validasi input
         $request->validate([
-            'nama_penerbit' => 'required',
+            'nama' => 'required',
         ]);
 
         // update data

@@ -54,7 +54,7 @@
       <!-- USER -->
       <div class="dropdown">
         <a href="#" data-bs-toggle="dropdown" class="d-flex align-items-center">
-          <img src="{{ asset('assets/images/avatar/1.png') }}" width="35" class="rounded-circle">
+          <img src="{{ asset('assets/images/avatar/foto.jpg') }}" width="35" class="rounded-circle">
         </a>
 
         <div class="dropdown-menu dropdown-menu-end">

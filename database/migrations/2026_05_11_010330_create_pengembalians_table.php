@@ -12,12 +12,29 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('pengembalians', function (Blueprint $table) {
+
             $table->id();
-            $table->foreignId('peminjaman_id')->constrained()->onDelete('cascade');
+
+            //  relasi ke tabel peminjamans
+            $table->foreignId('peminjaman_id')
+                ->constrained('peminjamans')
+                ->onDelete('cascade');
+
+            //  tanggal buku dikembalikan
             $table->date('tanggal_kembali');
+
+            //  jumlah hari terlambat
             $table->integer('terlambat')->default(0);
+
+            //  total denda
             $table->integer('denda')->default(0);
-            $table->enum('status_denda', ['lunas', 'belum_lunas'])->default('lunas');
+
+            //  status pembayaran denda
+            $table->enum('status_denda', [
+                'lunas',
+                'belum_lunas'
+            ])->default('lunas');
+
             $table->timestamps();
         });
     }

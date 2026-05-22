@@ -12,11 +12,11 @@ use Illuminate\Support\Facades\Cache;
 
 class BukuController extends Controller
 {
-    // 📚 menampilkan semua data buku
+    //  menampilkan semua data buku
     public function index()
     {
-        // ⚡ ambil data buku + relasi (pengarang, penerbit, dll)
-        // ⚡ pakai cache supaya tidak query terus ke database
+        //  ambil data buku + relasi (pengarang, penerbit, dll)
+        //  pakai cache supaya tidak query terus ke database
         $data = Cache::remember('buku_list', 60, function () {
             return Buku::with(['pengarang', 'penerbit', 'rakBuku', 'kelas'])
                 ->latest()   // urutkan dari data terbaru
@@ -27,10 +27,10 @@ class BukuController extends Controller
         return view('admin.buku.index', compact('data'));
     }
 
-    // ➕ menampilkan form tambah buku
+    //  menampilkan form tambah buku
     public function create()
     {
-        // ⚡ data master untuk dropdown (pakai cache biar ringan)
+        //  data master untuk dropdown (pakai cache biar ringan)
         $pengarang = Cache::remember('pengarang_all', 60, fn() => Pengarang::all());
         $penerbit = Cache::remember('penerbit_all', 60, fn() => Penerbit::all());
         $rakBuku = Cache::remember('rakbuku_all', 60, fn() => RakBuku::all());
@@ -45,17 +45,17 @@ class BukuController extends Controller
         ));
     }
 
-    // 💾 simpan data buku baru
+    //  simpan data buku baru
     public function store(Request $request)
     {
-        // 🔐 validasi input wajib
+        //  validasi input wajib
         $request->validate([
             'judul' => 'required',
             'pengarang_id' => 'required',
             'penerbit_id' => 'required',
         ]);
 
-        // 📸 default foto kosong
+        //  default foto kosong
         $namaFoto = null;
 
         // jika user upload foto
@@ -69,12 +69,12 @@ class BukuController extends Controller
             $foto->move(public_path('foto_buku'), $namaFoto);
         }
 
-        // 💾 simpan data ke database
+        //  simpan data ke database
         Buku::create(array_merge($request->all(), [
             'foto' => $namaFoto
         ]));
 
-        // 🧹 hapus cache supaya data baru muncul
+        //  hapus cache supaya data baru muncul
         Cache::forget('buku_list');
 
         // redirect kembali dengan pesan sukses
@@ -91,7 +91,7 @@ class BukuController extends Controller
         return view('admin.buku.show', compact('buku'));
     }
 
-    // ✏️ form edit buku
+    //  form edit buku
     public function edit(int $id)
     {
         // ambil data buku yang mau diedit
@@ -113,7 +113,7 @@ class BukuController extends Controller
         ));
     }
 
-    // 🔄 update data buku
+    //  update data buku
     public function update(Request $request, int $id)
     {
         // ambil data lama
@@ -138,13 +138,13 @@ class BukuController extends Controller
             'foto' => $namaFoto
         ]));
 
-        // 🧹 hapus cache biar data update langsung muncul
+        //  hapus cache biar data update langsung muncul
         Cache::forget('buku_list');
 
         return redirect('/admin/buku')->with('success', 'Data berhasil diupdate');
     }
 
-    // 🗑️ hapus data buku
+    //  hapus data buku
     public function destroy(int $id)
     {
         // hapus data dari database
@@ -154,5 +154,17 @@ class BukuController extends Controller
         Cache::forget('buku_list');
 
         return back()->with('success', 'Data berhasil dihapus');
+    }
+
+    //  menampilkan katalog buku untuk anggota
+    public function anggota()
+    {
+        //  ambil data buku + pengarang
+        $bukus = Buku::with('pengarang')
+            ->latest()
+            ->get();
+
+        // tampilkan view anggota
+        return view('anggota.buku.index', compact('bukus'));
     }
 }

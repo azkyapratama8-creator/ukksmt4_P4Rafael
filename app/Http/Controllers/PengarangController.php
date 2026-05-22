@@ -28,7 +28,7 @@ class PengarangController extends Controller
     {
         // 🔐 validasi input
         $request->validate([
-            'nama_pengarang' => 'required'
+            'nama' => 'required'
         ]);
 
         // simpan ke database
@@ -55,7 +55,7 @@ class PengarangController extends Controller
     {
         // 🔐 validasi input
         $request->validate([
-            'nama_pengarang' => 'required'
+            'nama' => 'required'
         ]);
 
         // update data

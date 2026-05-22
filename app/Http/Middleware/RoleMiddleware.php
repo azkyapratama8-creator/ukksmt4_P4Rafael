@@ -16,7 +16,11 @@ class RoleMiddleware
         }
 
         if (!in_array(Auth::user()->role, $roles)) {
-            return redirect('/dashboard');
+            return match (Auth::user()->role) {
+                'admin' => redirect('/admin/dashboard'),
+                'petugas' => redirect('/petugas/dashboard'),
+                default => redirect('/login'),
+            };
         }
 
         return $next($request);

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Dashboard Anggota')
+@section('title' , 'Dashboard Anggota')
 
 @section('content')
 <div class="page-header">
@@ -26,7 +26,7 @@
               <i class="feather-book-open text-white"></i>
             </div>
             <div>
-              <div class="fs-4 fw-bold">847</div>
+              <div class="fs-4 fw-bold">{{ $bukuTersedia }}</div>
               <div class="fs-12 text-muted">Buku Tersedia</div>
             </div>
           </div>
@@ -41,7 +41,7 @@
               <i class="feather-calendar text-white"></i>
             </div>
             <div>
-              <div class="fs-4 fw-bold">2</div>
+              <div class="fs-4 fw-bold">{{ $sedangDipinjam }}</div>
               <div class="fs-12 text-muted">Sedang Dipinjam</div>
             </div>
           </div>
@@ -56,7 +56,7 @@
               <i class="feather-clock text-white"></i>
             </div>
             <div>
-              <div class="fs-4 fw-bold">5</div>
+              <div class="fs-4 fw-bold">{{ $riwayatPeminjaman }}</div>
               <div class="fs-12 text-muted">Riwayat Peminjaman</div>
             </div>
           </div>
@@ -71,7 +71,7 @@
               <i class="feather-dollar-sign text-white"></i>
             </div>
             <div>
-              <div class="fs-4 fw-bold">Rp0</div>
+              <div class="fs-4 fw-bold">Rp{{ number_format($totalDenda, 0, ',', '.') }}</div>
               <div class="fs-12 text-muted">Total Denda</div>
             </div>
           </div>
@@ -86,48 +86,28 @@
         <div class="card-header">
           <h5 class="card-title">Buku Populer</h5>
         </div>
-        <div class="card-body">
-          <div class="row">
-            <div class="col-md-3 mb-3">
-              <div class="card">
-                <img src="{{ asset('assets/images/banner/1.jpg') }}" class="card-img-top" style="height: 180px; object-fit:cover">
-                <div class="card-body p-2 text-center">
-                  <h6 class="mb-1">Laravel 10</h6>
-                  <small class="text-muted">Stok: 5</small>
-                  <button class="btn btn-sm btn-primary w-100 mt-2">Pinjam</button>
+        <div class="card-body p-2">
+          <div class="row g-2">
+            @forelse($popularBooks as $buku)
+            <div class="col-lg-3 col-md-4 col-sm-6 col-12">
+              <div class="card rounded-3 overflow-hidden h-100 shadow-sm border-0">
+                <img src="{{ $buku->foto ? asset('foto_buku/'.$buku->foto) : asset('assets/images/banner/1.jpg') }}" class="card-img-top" style="height: 150px; object-fit:cover">
+                <div class="card-body p-2 text-center d-flex flex-column">
+                  <h6 class="mb-1" style="font-size: 0.875rem; line-height: 1.2; min-height: 2.4em;">{{ $buku->judul }}</h6>
+                  <small class="text-muted mb-2">Stok: {{ $buku->stok }}</small>
+                  @if($buku->stok > 0)
+                  <a href="{{ route('anggota.peminjaman.create') }}" class="btn btn-sm btn-primary w-100 mt-auto">Pinjam</a>
+                  @else
+                  <button class="btn btn-sm btn-secondary w-100 mt-auto" disabled>Stok Habis</button>
+                  @endif
                 </div>
               </div>
             </div>
-            <div class="col-md-3 mb-3">
-              <div class="card">
-                <img src="{{ asset('assets/images/banner/2.jpg') }}" class="card-img-top" style="height: 180px; object-fit:cover">
-                <div class="card-body p-2 text-center">
-                  <h6 class="mb-1">React Native</h6>
-                  <small class="text-muted">Stok: 3</small>
-                  <button class="btn btn-sm btn-primary w-100 mt-2">Pinjam</button>
-                </div>
-              </div>
+            @empty
+            <div class="col-12">
+              <div class="alert alert-info mb-0">Belum ada buku populer untuk ditampilkan.</div>
             </div>
-            <div class="col-md-3 mb-3">
-              <div class="card">
-                <img src="{{ asset('assets/images/banner/3.jpg') }}" class="card-img-top" style="height: 180px; object-fit:cover">
-                <div class="card-body p-2 text-center">
-                  <h6 class="mb-1">Database MySQL</h6>
-                  <small class="text-muted">Stok: 2</small>
-                  <button class="btn btn-sm btn-primary w-100 mt-2">Pinjam</button>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-3 mb-3">
-              <div class="card">
-                <img src="{{ asset('assets/images/banner/4.jpg') }}" class="card-img-top" style="height: 180px; object-fit:cover">
-                <div class="card-body p-2 text-center">
-                  <h6 class="mb-1">UI/UX Design</h6>
-                  <small class="text-muted">Stok: 0</small>
-                  <button class="btn btn-sm btn-secondary w-100 mt-2" disabled>Stok Habis</button>
-                </div>
-              </div>
-            </div>
+            @endforelse
           </div>
         </div>
       </div>
